@@ -21,6 +21,7 @@ using namespace std;
 using ll = long long;
 vector<int> a1, t1, c1;
 vector<int> a2, t2, c2;
+vector<int> diff;
 string A, B;
 void init(string a, string b) {
 	A = a;
@@ -32,6 +33,7 @@ void init(string a, string b) {
 	a2.assign(n + 1, 0);
 	t2.assign(n + 1, 0);
 	c2.assign(n + 1, 0);
+	diff.assign(n + 1, 0);
 	for(int i = 0; i < n; i++){
 		if(a[i] == 'A') a1[i + 1]++;
 		if(a[i] == 'T') t1[i + 1]++;
@@ -39,12 +41,14 @@ void init(string a, string b) {
 		if(b[i] == 'A') a2[i + 1]++;
 		if(b[i] == 'T') t2[i + 1]++;
 		if(b[i] == 'C') c2[i + 1]++;
+		if(a[i] != b[i]) diff[i + 1]++;
 		a1[i + 1] += a1[i];
 		t1[i + 1] += t1[i];
 		c1[i + 1] += c1[i];
 		a2[i + 1] += a2[i];
 		t2[i + 1] += t2[i];
 		c2[i + 1] += c2[i];
+		diff[i + 1] += diff[i];
 	}
 }
 
@@ -64,11 +68,6 @@ int get_distance(int x, int y){
 	if(!t){
 		return -1;
 	}
-	int z = 0;
-	f2(i, y, x - 1){
-		if(A[i] != B[i]){
-			z++;
-		}
-	}
+	int z = diff[y] - diff[x - 1];
 	return (z + 1) / 2;
 }
