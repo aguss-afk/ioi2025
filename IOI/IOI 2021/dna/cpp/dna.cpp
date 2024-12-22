@@ -19,55 +19,69 @@
 
 using namespace std;
 using ll = long long;
-vector<int> a1, t1, c1;
-vector<int> a2, t2, c2;
+vector<int> a, t, c, ac, ca, ta, ct, at, tc;
 vector<int> diff;
-string A, B;
-void init(string a, string b) {
-	A = a;
-	B = b;
-	int n = a.size();
-	a1.assign(n + 1, 0);
-	t1.assign(n + 1, 0);
-	c1.assign(n + 1, 0);
-	a2.assign(n + 1, 0);
-	t2.assign(n + 1, 0);
-	c2.assign(n + 1, 0);
+void init(string x, string y) {
+	int n = x.size();
+	a.assign(n + 1, 0);
+	t.assign(n + 1, 0);
+	c.assign(n + 1, 0);
+	at.assign(n + 1, 0);
+	ac.assign(n + 1, 0);
+	tc.assign(n + 1, 0);
+	ta.assign(n + 1, 0);
+	ca.assign(n + 1, 0);
+	ct.assign(n + 1, 0);
 	diff.assign(n + 1, 0);
 	for(int i = 0; i < n; i++){
-		if(a[i] == 'A') a1[i + 1]++;
-		if(a[i] == 'T') t1[i + 1]++;
-		if(a[i] == 'C') c1[i + 1]++;
-		if(b[i] == 'A') a2[i + 1]++;
-		if(b[i] == 'T') t2[i + 1]++;
-		if(b[i] == 'C') c2[i + 1]++;
-		if(a[i] != b[i]) diff[i + 1]++;
-		a1[i + 1] += a1[i];
-		t1[i + 1] += t1[i];
-		c1[i + 1] += c1[i];
-		a2[i + 1] += a2[i];
-		t2[i + 1] += t2[i];
-		c2[i + 1] += c2[i];
+		if(x[i] == 'A') a[i + 1]++;
+		if(x[i] == 'T') t[i + 1]++;
+		if(x[i] == 'C') c[i + 1]++;
+		if(y[i] == 'A') a[i + 1]--;
+		if(y[i] == 'T') t[i + 1]--;
+		if(y[i] == 'C') c[i + 1]--;
+		if(x[i] == 'A' and y[i] == 'T') at[i + 1]++;
+		if(x[i] == 'A' and y[i] == 'C') ac[i + 1]++;
+		if(x[i] == 'T' and y[i] == 'C') tc[i + 1]++;
+		if(y[i] == 'A' and x[i] == 'T') ta[i + 1]++;
+		if(y[i] == 'A' and x[i] == 'C') ca[i + 1]++;
+		if(y[i] == 'T' and x[i] == 'C') ct[i + 1]++;
+		if(x[i] != y[i]) diff[i + 1]++;
+		a[i + 1] += a[i];
+		t[i + 1] += t[i];
+		c[i + 1] += c[i];
 		diff[i + 1] += diff[i];
+		at[i + 1] += at[i];
+		ac[i + 1] += ac[i];
+		tc[i + 1] += tc[i];
+		ta[i + 1] += ta[i];
+		ca[i + 1] += ca[i];
+		ct[i + 1] += ct[i];
 	}
 }
 
 int get_distance(int x, int y){
-	bool t = 1;
+	bool z = 1;
 	x++;
 	y++;
-	if(a1[y] - a1[x - 1] != a2[y] - a2[x - 1]){
-		t = 0;
+	if(a[y] - a[x - 1]){
+		z = 0;
 	}
-	if(t1[y] - t1[x - 1] != t2[y] - t2[x - 1]){
-		t = 0;
+	if(t[y] - t[x - 1]){
+		z = 0;
 	}
-	if(c1[y] - c1[x - 1] != c2[y] - c2[x - 1]){
-		t = 0;
+	if(c[y] - c[x - 1]){
+		z = 0;
 	}
-	if(!t){
+	if(!z){
 		return -1;
 	}
-	int z = diff[y] - diff[x - 1];
-	return (z + 1) / 2;
+	int n = diff[y] - diff[x - 1], ans = 0;
+	int mat, mac, mtc;
+	mat = min(at[y] - at[x - 1], ta[y] - ta[x - 1]);
+	mac = min(ac[y] - ac[x - 1], ca[y] - ca[x - 1]);
+	mtc = min(tc[y] - tc[x - 1], ct[y] - ct[x - 1]);
+	n -= 2 * (mat + mac + mtc);
+	ans += mat + mac + mtc; 
+	return n / 3 * 2 + ans;
 }
