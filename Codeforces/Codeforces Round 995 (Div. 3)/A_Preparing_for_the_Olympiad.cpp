@@ -22,16 +22,30 @@ using ll = long long;
 void solve(){
     int n;
     cin >> n;
-    map<string, vector<string>> graph;
-    f2(i, n, 0) {
-        string aux;
-        cin >> aux;
-        graph[aux.substr(0, 2)].push_back(aux.substr(1, 2));
+    vector<int> a1(n), a2(n);
+    f1(i, a1){
+        cin >> i;
+    } 
+    f1(i, a2){
+        cin >> i;
     }
+    int x = 0;
+    int y = 0;
+    f2(i, n - 1, 0){
+        if(a2[i + 1] < a1[i]){
+            y += a2[i + 1];
+            x += a1[i];
+        }
+    }
+    x += a1[n - 1];
+    cout << (x - y) << endl;
 }
 int main(){
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+        solve();
 }
