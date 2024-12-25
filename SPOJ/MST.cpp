@@ -20,7 +20,7 @@ using namespace std;
 using ll = long long;
 ll maxsize, minsum;
 vector<ll> arr, size;
-vector<vector<ll>> graph, tree;
+vector<vector<ll>> tree;
 vector<pair<ll, pair<ll, ll>>> weights;
 void unite(ll a, ll b, ll w){
     if(size[a] > size[b])
@@ -36,7 +36,6 @@ ll find(ll a){
 void solve(){
     int n, m;
     cin >> n >> m;
-    graph.assign(n + 1, vector<ll>(0));
     tree.assign(n + 1, vector<ll>(0));
     arr.assign(n + 1, 0);
     size.assign(n + 1, 0);
@@ -47,19 +46,18 @@ void solve(){
     f2(i, m, 0){
         int a, b, w;
         cin >> a >> b >> w;
-        graph[a].push_back(b);
-        graph[b].push_back(a);
         weights.push_back({w, {a, b}});
     }
     maxsize = 1;
     sort(all(weights));
     for(int i = 0; maxsize != n; i++){
-        int a = find(weights[i].second.first);
-        int b = find(weights[i].second.second);
+        int x = weights[i].second.first, y = weights[i].second.second;
+        int a = find(x);
+        int b = find(y);
         if(a != b){
             unite(a, b, weights[i].first);
-            tree[weights[i].second.first].push_back(weights[i].second.second);
-            tree[weights[i].second.second].push_back(weights[i].second.first);
+            tree[x].push_back(y);
+            tree[y].push_back(x);
         }
     }
     cout << minsum << endl;
