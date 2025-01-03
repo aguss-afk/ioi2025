@@ -20,10 +20,25 @@ using namespace std;
 using ll = long long;
 
 void solve(){
-    ll n;
+    ll n, sum = 0;
     cin >> n;
-    ll x = log2(sqrt(n));
-    ll ans = pow(2, x);
+    vector<ll> a1(n), a2(n);
+    f1(i, a1){
+        cin >> i;
+    }
+    f1(i, a2){
+        cin >> i;
+    }
+    ll ans = -INF; 
+    f2(i, n, 0){
+        ll aux = a1[i] + a2[i];
+        f2(j, n, 0){
+            if(j != i){
+                aux += max(a1[j], a2[j]);
+            }
+        }
+        ans = max(aux, ans);
+    }
     cout << ans << endl;
 }
 int main(){
