@@ -38,12 +38,13 @@ void solve(int K, vector<int> ar, int n){
     arr = ar;
     for1(0, 0);
     f2(i, ans.size(), 0){
-        f1(j, ans[i]){
-            cout << j << sp;
+        for(int j = 0; j < 6; j++){
+            cout << ans[i][j];
+            if(j != 5){
+                cout << sp;
+            }
         }
-        if(i != ans.size() - 1 or n != N - 1){
-            cout << endl; 
-        }
+        cout << endl;
     }
 }
 int main(){
@@ -70,5 +71,4 @@ int main(){
             cout << endl;
         }
     }
-    cout << endl;
 }

@@ -18,23 +18,38 @@
 
 using namespace std;
 using ll = long long;
-
+int n, m;
+vector<int> arr, pos;
+int add(int a){
+    int res = 0;
+    while(a > 0){
+        res += arr[a];
+        a -= a & (-a);
+    }
+    return res;
+}
+void update(int a, int b){
+    while(a <= n + m){
+        arr[a] += b;
+        a += a & (-a);
+    }
+}
 void solve(){
-    int n, m;
     cin >> n >> m;
-    vector<int> arr(n + 1, 1);
-    iota(rall(arr), 1); 
-    stack<int> s;
-    for(int i = n; i >= 1; i--){
-        s.push(arr[i]);
+    int currtop = m;
+    arr.assign(n + m + 1, 0);
+    pos.assign(n + 1, 0);
+    f2(i, n, 0){
+        pos[i + 1] = i + m + 1;
+        update(pos[i + 1], 1);
     }
     while(m--){
-        int x;
-        cin >> x;
-        cout << s.top() - arr[x] << sp;
-        arr[x] = s.size();
-        s.pop();
-        s.push(arr[x]);
+        int aux;
+        cin >> aux;
+        cout << add(pos[aux] - 1) << sp;
+        update(pos[aux], -1);
+        pos[aux] = currtop--;
+        update(pos[aux], 1);
     }
     cout << endl;
 }
