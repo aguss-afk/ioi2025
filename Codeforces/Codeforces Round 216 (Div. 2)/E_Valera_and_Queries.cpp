@@ -54,11 +54,10 @@ void solve(){
             int b = bit.getsum(a);
             map<int, int>::iterator it = id.upper_bound(a);
             for(int i = 0; i < b; i++){
-                it = prev(it);
-                ans.insert(it -> second);
+                ans.insert(it-- -> second);
             }
         }
-        cout << ans.size() << endl;
+        cout << ans.size() << "\n";
         ans.clear();
     }
 }
