@@ -12,11 +12,11 @@ using ll = long long;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 5;
 
-struct dsu {
+struct union_find {
     vector<int> arr;
     vector<pair<int, int>> rep;
     int n;
-    dsu(int n) : n(n){
+    union_find(int n) : n(n){
         arr.assign(n, 0);
         iota(all(arr), 0);
     }
@@ -39,7 +39,7 @@ void solve(){
     int n;
     cin >> n;
     vector<pair<int, int>> op(n - 1);
-    dsu us(n);
+    union_find us(n);
     for(auto &[x, y] : op){
         cin >> x >> y;
         x--;
