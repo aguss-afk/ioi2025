@@ -11,43 +11,49 @@ using ll = long long;
 
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 5;
-vector<int> arr;
-vector<ll> prefsum;
 
 void solve(){
-    int n, m;
+    int n, m, j;
     cin >> n >> m;
-    arr.assign(n + 1, 0);
+    vector<int> arr(n), ans(n, MOD);
+    bool x = 1;
     for(int i = 0; i < n; i++){
-        cin >> arr[i + 1];
+        cin >> arr[i];
+        if(i and x){
+            if(arr[i] + arr[i - 1] > m){
+                j = i;
+                x = 0;
+            }
+        }
+    }
+    for(int i = j; i < n; i++){
+        j--;
+        if(j > 0){
+            while(arr[i] + arr[j] > m){
+                j--;
+                if(j < 0){
+                    break;
+                }
+            }
+        }
+        ans[i] = j;
     }
     int q;
     cin >> q;
     while(q--){
         int a, b;
         cin >> a >> b;
+        a--;
+        b--;
         if((b - a + 1) & 1){
-            if(arr[b] > m){
-                cout << 0;
-                continue;
-            }
             b--;
-        }
-        bool t = 1;
-        for(int i = a; i < (b + a + 1) / 2; i++){
-            //cout << i << ' ';
-            //cout << arr[i] + arr[b - i + a] << ' ';
-            if(arr[i] + arr[b - i + a] > m){
-                cout << 0;
-                t = 0;
-                break;
-            }
-        }
-        if(!t){
+        } 
+        if(a > ans[b]){
+            cout << 0;
             continue;
         }
         cout << 1;
-    } 
+    }
 }
 int main(){
     ios::sync_with_stdio(false);
