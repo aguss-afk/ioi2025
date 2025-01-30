@@ -1,60 +1,70 @@
 #include <bits/stdc++.h>
 
-#define _USE_MATH_DEFINES
-#define INF LLONG_MAX
-#define MOD 1000000007
-
-#define endl "\n"
-#define sp " "
-
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
 
-#define f1(i, x) for(auto &i : x)
-#define f2(i, x, j) for(ll i = j; i < x; i++)
-
-#define raya() cout << endl << "====================================" << endl
-#define dbg(x) cerr << #x << ": " << x << endl;
+#define dbg(x) cerr << #x << ": " << x << '\n';
+#define dbgv(v) cerr << #v << ": "; for(auto &el : v) cerr << el << " "; cerr << '\n';
 
 using namespace std;
 using ll = long long;
-ll n, m, num;
+
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 5;
 vector<vector<pair<ll, ll>>> arr;
-vector<ll> dis;
-void dijkstra(ll x){
-    vector<bool> vis(n + 1, 0);
-    dis.assign(n + 1, INF);
+vector<ll> dis, mi, ma, num;
+vector<bool> vis;
+void dijkstra(){
     priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll, ll>>> q;
-    q.push({0, x});
-    dis[x] = 0;
+    dis[0] = 0; 
+    num[0] = 1;
+    q.push({0, 0});
     while(!q.empty()){
-        ll b = q.top().second;
+        ll node = q.top().second;
         q.pop();
-        if(vis[b]) continue;
-        vis[b] = 1;
-        f1(i, arr[b]){
-            ll a = i.second, c = i.first;
-            if(a + dis[b] < dis[c]){
-                dis[c] = a + dis[b];
-                q.push({dis[c], c});
+        if(vis[node]){
+            continue;
+        }
+        vis[node] = 1;
+        for(auto &[x, y] : arr[node]){
+            if(dis[node] + y < dis[x]){
+                dis[x] = dis[node] + y;
+                num[x] = num[node];
+                mi[x] = mi[node] + 1;
+                ma[x] = ma[node] + 1;
+                q.push({dis[x], x});
+            } else if(dis[node] + y == dis[x]){
+                num[x] += num[node];
+                num[x] %= MOD;
+                mi[x] = min(mi[node] + 1, mi[x]);
+                ma[x] = max(ma[node] + 1, ma[x]);
             }
         }
-    }
+    } 
 }
+
 void solve(){
-    cin >> n >> m; 
-    arr.assign(n + 1, vector<pair<ll, ll>>(0));
-    f2(i, m, 0){
+    int n, m;
+    cin >> n >> m;
+    arr.assign(n, vector<pair<ll, ll>>(0));
+    dis.assign(n, INF);
+    mi.assign(n, 0);
+    ma.assign(n, 0);
+    vis.assign(n, 0);
+    num.assign(n, 0);
+    for(int i = 0; i < m; i++){
         ll a, b, c;
         cin >> a >> b >> c;
+        a--;
+        b--;
         arr[a].push_back({b, c});
-    }
-    dijkstra(1);
-    cout << dis[n];
+    }  
+    dijkstra();
+    cout << dis[n - 1] << ' ' << num[n - 1] % MOD << ' ' << mi[n - 1] << ' ' << ma[n - 1];
 }
 int main(){
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
     solve();
 }
