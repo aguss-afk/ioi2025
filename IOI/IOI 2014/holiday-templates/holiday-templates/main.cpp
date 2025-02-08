@@ -105,3 +105,19 @@ long long int findMaxAttraction(int n, int start, int d, int attraction[]) {
     }
     return ans;
 }
+
+void solve(){
+    int N, start, d;
+    cin >> N >> start >> d;
+    int attraction[N];
+    for(int i = 0; i < N; i++){
+        cin >> attraction[i];
+    }
+    cout << findMaxAttraction(N, start, d, attraction);    
+}
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    solve();
+}
