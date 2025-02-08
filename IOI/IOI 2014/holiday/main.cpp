@@ -1,3 +1,4 @@
+<<<<<<< HEAD:IOI/IOI 2014/holiday-templates/holiday-templates/main.cpp
 #include"holiday.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -103,17 +104,55 @@ long long int findMaxAttraction(int n, int start, int d, int attraction[]) {
         st.set_as_active(in[i]);
         ans = max(ans, st.query(d - i));
     }
+=======
+#include <bits/stdc++.h>
+
+#define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
+
+#define raya() cout << endl << "====================================" << endl
+#define dbg(x) cerr << #x << ": " << x << endl;
+
+using namespace std;
+using ll = long long;
+
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 5;
+int n;
+vector<ll> arr;
+vector<vector<ll>> dp;
+ll ans = 0;
+
+int iz(int d, int curr){
+    if(d <= 0
+}
+
+ll findans(int N, int start, int d, int attractions[]){
+    n = N;
+    arr.assign(n, 0);
+    copy(attractions, attractions + n, arr.begin());
+
+>>>>>>> 9ae832935ea48688d14c508cb7ef40a9452db561:IOI/IOI 2014/holiday/main.cpp
     return ans;
 }
 
 void solve(){
     int N, start, d;
     cin >> N >> start >> d;
+<<<<<<< HEAD:IOI/IOI 2014/holiday-templates/holiday-templates/main.cpp
     int attraction[N];
     for(int i = 0; i < N; i++){
         cin >> attraction[i];
     }
     cout << findMaxAttraction(N, start, d, attraction);    
+=======
+    int attractions[N];
+    for(int i = 0; i < N; i++){
+        cin >> attractions[i];
+    }
+    cout << findans(N, start, d, attractions);
+
+>>>>>>> 9ae832935ea48688d14c508cb7ef40a9452db561:IOI/IOI 2014/holiday/main.cpp
 }
 int main(){
     ios::sync_with_stdio(0);
