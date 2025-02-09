@@ -2,47 +2,106 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
+#define all(x) x.begin(), x.end()
+#define dbg(x) cerr << #x << ": " << x << '\n';
+#define dbgv(x) cerr << #x << ": "; for(auto i : x) cerr << i << ' '; cerr << '\n';
+struct element {
+    ll val;
+    int count;
+};
 
-int n;
-vector<ll> arr;
-ll ans = 0;
-vector<bool> vis;
-vector<vector<ll>> dpcaca;
+struct segment_tree {
+    vector<element> st;
+    vector<ll> val;
+    int size;
+    element merge(element e1, element e2){
+        return {e1.val + e2.val, e1.count + e2.count};
+    }
+    segment_tree(int n, vector<ll> &attraction){
+        size = 1;
+        while(size < n){
+            size *= 2;
+        }
+        st.resize(size * 2);
+        val.resize(n);
+        copy(attraction.begin(), attraction.end(), val.begin());
+        build(attraction, 0, 0, size);
+    }
+    void build(vector<ll> &arr, int x, int lx, int rx){
+        if(lx + 1 == rx){
+            if(lx < arr.size()){
+                st[x] = {0, 0};
+            }
+            return;
+        }
+        int m = (lx + rx) / 2;
+        build(arr, 2 * x + 1, lx, m);
+        build(arr, 2 * x + 2, m, rx);
+        st[x] = merge(st[2 * x + 1], st[2 * x + 2]);
+    }
+    void set_as_active(int i, int x, int lx, int rx){
+        if(lx + 1 == rx){
+            if(lx < val.size()){
+                st[x] = {val[lx], 1};
+            }
+            return;
+        }
+        int m = (lx + rx) / 2;
+        if(i < m){
+            set_as_active(i, 2 * x + 1, lx, m);
+        } else {
+            set_as_active(i, 2 * x + 2, m, rx);
+        }
+        st[x] = merge(st[2 * x + 1], st[2 * x + 2]);
+    }
+    void set_as_active(int i){
+        set_as_active(i, 0, 0, size);
+    }
+    ll query(int x, int lx, int rx, int k){
+        if(k <= 0){
+            return 0;
+        }
+        if(lx + 1 == rx or st[x].count <= k){
+            return st[x].val;
+        }
+        int m = (lx + rx) / 2;
+        if(st[2 * x + 1].count >= k){
+            return query(2 * x + 1, lx, m, k);
+        } 
+        return query(2 * x + 1, lx, m, st[2 * x + 1].count) + query(2 * x + 2, m, rx, k - st[2 * x + 1].count);
+    }
+    ll query(int k){
+        return query(0, 0, size, k);
+    }
+    void print(bool k){
+        for(int i = 0; i < 2 * size; i++){
+            if(k){
+                cout << st[i].val << ' ';
+                continue;
+            }
+            cout << st[i].count << ' ';
+        }
+        cout << '\n';
+    }
+};
 
-ll r(int d, int curr){
-    if(d <= 0 or curr >= n){
-        return 0;
-    }
-    if(dpcaca[curr][d] != -1){
-        return dpcaca[curr][d];
-    }
-    ll n1 = arr[curr] + r(d - 2, curr + 1);
-    ll n2 = r(d - 1, curr + 1);
-    return dpcaca[curr][d] = max(n1, n2);
-}
-
-ll l(int d, int curr){
-    if(d <= 0 or curr < 0){
-        return 0;
-    }
-    if(dpcaca[curr][d] != -1){
-        return dpcaca[curr][d];
-    }
-    ll n1 = arr[curr] + l(d - 2, curr - 1);
-    ll n2 = r(d - 1, curr - 1);
-    return dpcaca[curr][d] = max(n1, n2);
-}
-long long int findMaxAttraction(int N, int start, int d, int attraction[]) {
-    n = N;
-    arr.assign(n, 0);
-    copy(attraction, attraction + n, arr.begin());
+long long int findMaxAttraction(int n, int start, int d, int attraction[]) {
+    vector<pair<ll, int>> vec(n);
+    vector<ll> arr(n);
     for(int i = 0; i < n; i++){
-        dpcaca.assign(n + 5, vector<ll>(d + 5, -1));
-        dpcaca.clear();
-        ans = max(ans, l(d - abs(start - i), i));
-        dpcaca.assign(n + 5, vector<ll>(d + 5, -1));
-        dpcaca.clear();
-        ans = max(ans, r(d - abs(start - i), i));
+        vec[i] = {attraction[i], i};
+    }
+    sort(vec.rbegin(), vec.rend());
+    map<int, int> in;
+    for(int i = 0; i < n; i++){
+        arr[i] = vec[i].first;
+        in[vec[i].second] = i;
+    }
+    segment_tree st(n, arr);
+    ll ans = 0;
+    for(int i = 0; i < n; i++){
+        st.set_as_active(in[i]);
+        ans = max(ans, st.query(d - i));
     }
     return ans;
 }

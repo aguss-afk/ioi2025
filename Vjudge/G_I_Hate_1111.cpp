@@ -9,12 +9,14 @@ using ll = long long;
 void solve(){
     ll x;
     cin >> x;
-    ll a = x % 11;
-    if(a != 1 and a){
-        cout << "NO\n";
-        return;
+    while(x >= 0){
+        if(!(x % 11)){
+            cout << "YES\n";
+            return;
+        }
+        x -= 111;
     } 
-    cout << "YES\n";
+    cout << "NO\n";
 }
 
 int main(){
