@@ -9,7 +9,7 @@ using ll = long long;
 bool test_cases = 0;
 int n;
 vector<vector<int>> arr;
-vector<int> ans;
+vector<int> ans;a
 void solve(){
     cin >> n;
     arr.assign(n, vector<int>());
