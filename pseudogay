@@ -1,0 +1,56 @@
+Teoria 1.
+
+1.1 punto de articulacion: nodo que si eliminas aumenta el numero 
+                          de componentes conexos
+1.2 puente: arista que si eliminas aumenta el numero de componentes
+           conexos
+
+
+Teoria 2.
+
+n = numero de nodos
+pila = vector vacio
+visitado = vector de tamanio n
+por cada i en grafo:
+    si i no esta en visitado: 
+        si dfs(i):
+            imprimir ("hay ciclo")
+        si no:
+            imprimir ("no hay ciclo")
+
+dfs(i):
+    marcar i como verdadero en visitado
+    agregar i a pila
+    por cada vecino u de nodo i:
+        si u no esta en visitado: 
+            si dfs(u):
+                retornar verdadero
+        sino si u esta en pila: 
+            retornar verdadero
+
+    remover i de pila
+    retornar falso
+
+
+Teoria 3.
+
+Es un arbol que minimiza la suma total de las aristas incluidas manteniendo todos 
+los nodos conectados sin ciclos.
+
+
+Problema 1.
+
+No se puede 
+a b y c es el numero de nodos en los 3 componentes conexos
+a, b, c pertenecen a el conjunto de numeros enteros
+a + b + c = 7
+a, b, c >= 1
+n(n - 1) / 2 es la forma de maximizar aristas en un grafo indicando
+que cada nodo esta conectado con otro por una arista en un grafo de n 
+nodos sin que se repitan aristas
+para cumplir la condicion de 11 aristas
+a(a - 1)/2 + b(b - 1)/2 + c(c - 1)/2 = 11
+entonces 
+a^2 + b^2 + c^2 = 29
+no existen a, b, c tales que cumplan todas las condiciones
+lo mas cercano es a = 5, b = 1, c = 1 
