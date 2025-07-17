@@ -114,7 +114,7 @@ void solve(){
             int dis = depth[r] - depth[father];
             int longti=0;
             for(int i = 0; i <= lg; i++){
-                if(dis & (1 << i)){k
+                if(dis & (1 << i)){
                     ans = min(min_shop[r][i], ans);
                     r = up[r][i]; 
                 }
